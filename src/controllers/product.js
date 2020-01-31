@@ -17,13 +17,14 @@ module.exports = {
       .catch(err => console.log(err));
   },
   insertProduct: (req, res) => {
-
+    // console.log(req.file.filename);
     const {name, description, price, stock, id_category} = req.body;
     const data = {
       name,
       description,
       price,
       stock,
+      image: `http://localhost:4001/uploads/${req.file.filename}`,
       id_category,
     }
     productModel.insertProduct(data)
