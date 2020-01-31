@@ -1,13 +1,16 @@
 const productModel = require('../models/product')
+const miscHelper = require('../helpers/helpers');
+var jwt = require('jsonwebtoken');
 
 module.exports = {
   getProduct: (req, res)=>{
     productModel.getProduct()
     .then((result)=>{
-      res.json(result)
+      miscHelper.response(res, result, 200)
     })
     .catch(err=>console.log(err));
   },
+
   productDetail: (req, res) => {
     const id_product = req.params.id_product;
     productModel.productDetail(id_product)
@@ -29,7 +32,7 @@ module.exports = {
     }
     productModel.insertProduct(data)
       .then((result) => {
-        res.json(result)
+        miscHelper.response(res, result, 201)
       })
       .catch(err => console.log(err));
   },
@@ -58,4 +61,10 @@ module.exports = {
       })
       .catch(err => console.log(err));
   },
+  loginUser:(req, res)=>{
+    var token = jwt.sign({ id: 1, name: 'muhammad risano' }, process.env.PRIVATE_KEY, { expiresIn: '1h' });
+    res.json({
+      token: token
+    })
+  }
 }
